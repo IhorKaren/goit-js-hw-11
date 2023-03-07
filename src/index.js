@@ -15,7 +15,7 @@ const refs = {
 };
 
 refs.formEl.addEventListener('submit', handleFormSubmit);
-refs.loadMoreBtnEl.addEventListener('click', handleLodaMoreBtnClick);
+refs.loadMoreBtnEl.addEventListener('click', handleLoadMoreBtnClick);
 
 let currentPage = 1;
 let formValue = '';
@@ -33,14 +33,14 @@ async function handleFormSubmit(e) {
 
   currentPage = 1;
   refs.loadMoreBtnEl.classList.remove('hidden');
-  await fetchImages(formValue);
-  makeGalleryUI();
+  const response = await fetchImages(formValue);
+  makeGalleryUI(response);
 }
 
-async function handleLodaMoreBtnClick(e) {
+async function handleLoadMoreBtnClick() {
   currentPage += 1;
-  await fetchImages(formValue);
-  makeGalleryUI();
+  const response = await fetchImages(formValue);
+  makeGalleryUI(response);
 }
 
 async function fetchImages(searchValue) {
@@ -57,7 +57,7 @@ async function fetchImages(searchValue) {
       },
     });
 
-    makeGalleryUI(response.data.hits);
+    return response.data.hits;
   } catch (error) {
     refs.loadMoreBtnEl.classList.add('hidden');
     Notiflix.Notify.info(
@@ -80,14 +80,14 @@ function makeGalleryUI(photos) {
     return;
   }
 
+  const markup = makeGalleryItem(photos);
+  refs.galleryEl.insertAdjacentHTML('beforeend', markup);
+
   Notiflix.Notify.success(
     `Hooray! We found ${
       document.querySelectorAll('.photo-card').length
     } images.`
   );
-
-  const markup = makeGalleryItem(photos);
-  refs.galleryEl.insertAdjacentHTML('beforeend', markup);
 
   const lightbox = new SimpleLightbox('.gallery a', {
     captionsData: 'alt',
