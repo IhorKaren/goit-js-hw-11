@@ -16,14 +16,14 @@ const refs = {
 
 let currentPage = 1;
 let formValue = '';
-const perPage = 40;
 
 refs.formEl.addEventListener('submit', handleFormSubmit);
 refs.loadMoreBtnEl.addEventListener('click', handleLodaMoreBtnClick);
 
 async function handleFormSubmit(e) {
   e.preventDefault();
-
+  clearMarkup();
+  
   formValue = e.target.elements.searchQuery.value;
 
   if (formValue === '') {
@@ -31,11 +31,10 @@ async function handleFormSubmit(e) {
     return;
   }
 
+  currentPage = 1;
+  refs.loadMoreBtnEl.classList.remove('hidden');
   await fetchImages(formValue);
   makeGalleryUI();
-  refs.loadMoreBtnEl.classList.remove('hidden');
-  currentPage = 1;
-  refs.galleryEl.innerHTML = '';
 }
 
 async function handleLodaMoreBtnClick(e) {
@@ -53,18 +52,23 @@ async function fetchImages(searchValue) {
         image_type: 'photo',
         orientation: 'horizontal',
         page: currentPage,
-        per_page: perPage,
+        per_page: 40,
         safesearch: true,
       },
     });
 
     makeGalleryUI(response.data.hits);
   } catch (error) {
+    Notiflix.Notify.failure(`${error}`);
     console.log(error);
   }
 }
 
 function makeGalleryUI(photos) {
+  if (!photos) {
+    return
+  }
+
   if (photos.length === 0) {
     refs.loadMoreBtnEl.classList.add('hidden');
     Notiflix.Notify.info(
@@ -77,7 +81,11 @@ function makeGalleryUI(photos) {
 
   refs.galleryEl.insertAdjacentHTML('beforeend', markup);
   galleryModalWindow();
-  Notiflix.Notify.success(`Hooray! We found ${document.querySelectorAll('.photo-card').length} images.`);
+  Notiflix.Notify.success(
+    `Hooray! We found ${
+      document.querySelectorAll('.photo-card').length
+    } images.`
+  );
 }
 
 function galleryModalWindow() {
@@ -86,4 +94,8 @@ function galleryModalWindow() {
     captionPosition: 'bottom',
     captionDelay: 300,
   });
+}
+
+function clearMarkup() {
+  refs.galleryEl.innerHTML = '';
 }
