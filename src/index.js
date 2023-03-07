@@ -2,7 +2,7 @@ import axios from 'axios';
 import Notiflix from 'notiflix';
 import SimpleLightbox from 'simplelightbox';
 import 'simplelightbox/dist/simple-lightbox.min.css';
-import makeGalleryItem from './js/make-markup';
+import makeGalleryItem from './js/makeGalleryItem';
 
 const API_KEY = '34207021-c15ce293e39f116dd33171e61';
 const URL = 'https://pixabay.com/api/';
@@ -14,16 +14,16 @@ const refs = {
   loadMoreBtnEl: document.querySelector('.load-button'),
 };
 
-let currentPage = 1;
-let formValue = '';
-
 refs.formEl.addEventListener('submit', handleFormSubmit);
 refs.loadMoreBtnEl.addEventListener('click', handleLodaMoreBtnClick);
+
+let currentPage = 1;
+let formValue = '';
 
 async function handleFormSubmit(e) {
   e.preventDefault();
   clearMarkup();
-  
+
   formValue = e.target.elements.searchQuery.value;
 
   if (formValue === '') {
@@ -59,36 +59,36 @@ async function fetchImages(searchValue) {
 
     makeGalleryUI(response.data.hits);
   } catch (error) {
-    Notiflix.Notify.failure(`${error}`);
+    refs.loadMoreBtnEl.classList.add('hidden');
+    Notiflix.Notify.info(
+      `We're sorry, but you've reached the end of search results.`
+    );
     console.log(error);
   }
 }
 
 function makeGalleryUI(photos) {
   if (!photos) {
-    return
+    return;
   }
 
   if (photos.length === 0) {
     refs.loadMoreBtnEl.classList.add('hidden');
     Notiflix.Notify.info(
-      "We're sorry, but you've reached the end of search results."
+      'Sorry, there are no images matching your search query. Please try again.'
     );
     return;
   }
 
-  const markup = makeGalleryItem(photos);
-
-  refs.galleryEl.insertAdjacentHTML('beforeend', markup);
-  galleryModalWindow();
   Notiflix.Notify.success(
     `Hooray! We found ${
       document.querySelectorAll('.photo-card').length
     } images.`
   );
-}
 
-function galleryModalWindow() {
+  const markup = makeGalleryItem(photos);
+  refs.galleryEl.insertAdjacentHTML('beforeend', markup);
+
   const lightbox = new SimpleLightbox('.gallery a', {
     captionsData: 'alt',
     captionPosition: 'bottom',
