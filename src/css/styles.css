@@ -110,3 +110,15 @@ button:hover {
   border-right: 1px solid royalblue;
   padding-right: 5px;
 }
+
+.load-button {
+  position: relative;
+  left: 50%;
+  transform: translateY(-50%);
+
+  padding: 10px 25px 10px 25px;
+}
+
+.hidden {
+  display: none;
+}
