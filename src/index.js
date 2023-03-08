@@ -19,6 +19,7 @@ refs.loadMoreBtnEl.addEventListener('click', handleLoadMoreBtnClick);
 
 let currentPage = 1;
 let formValue = '';
+let lightbox = null;
 
 async function handleFormSubmit(e) {
   e.preventDefault();
@@ -90,11 +91,7 @@ function makeGalleryUI(photos) {
     } images.`
   );
 
-  const lightbox = new SimpleLightbox('.gallery a', {
-    captionsData: 'alt',
-    captionPosition: 'bottom',
-    captionDelay: 300,
-  });
+  modalSimpleLightBox()
 }
 
 function smoothScroll() {
@@ -112,3 +109,16 @@ function clearMarkup() {
   refs.galleryEl.innerHTML = '';
 }
 
+function modalSimpleLightBox() {
+  // Fix double backdrop
+  if (lightbox) {
+    lightbox.destroy();
+    lightbox = null;
+  }
+
+ return lightbox = new SimpleLightbox('.gallery a', {
+    captionsData: 'alt',
+    captionPosition: 'bottom',
+    captionDelay: 300,
+  });
+}
