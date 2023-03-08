@@ -61,7 +61,6 @@ async function fetchImages(searchValue) {
 
     return response.data.hits;
   } catch (error) {
-    refs.loadMoreBtnEl.classList.add('hidden');
     Notiflix.Notify.info(
       `We're sorry, but you've reached the end of search results.`
     );
@@ -71,11 +70,12 @@ async function fetchImages(searchValue) {
 
 function makeGalleryUI(photos) {
   if (!photos) {
+    hideLoadMoreBtn()
     return;
   }
 
   if (photos.length === 0) {
-    refs.loadMoreBtnEl.classList.add('hidden');
+    hideLoadMoreBtn()
     Notiflix.Notify.info(
       'Sorry, there are no images matching your search query. Please try again.'
     );
@@ -107,6 +107,10 @@ function smoothScroll() {
 
 function clearMarkup() {
   refs.galleryEl.innerHTML = '';
+}
+
+function hideLoadMoreBtn() {
+  refs.loadMoreBtnEl.classList.add('hidden');
 }
 
 function modalSimpleLightBox() {
