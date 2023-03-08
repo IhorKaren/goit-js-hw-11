@@ -113,8 +113,9 @@ button:hover {
 
 .load-button {
   position: relative;
+  margin-bottom: 15px;
   left: 50%;
-  transform: translateY(-50%);
+  transform: translateX(-50%);
 
   padding: 10px 25px 10px 25px;
 }

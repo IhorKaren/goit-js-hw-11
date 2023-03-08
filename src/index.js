@@ -30,6 +30,7 @@ async function handleFormSubmit(e) {
   formValue = e.target.elements.searchQuery.value.trim();
 
   if (!formValue) {
+    hideLoadMoreBtn()
     Notiflix.Notify.info('Please fill in the input field for image search');
     return;
   }
