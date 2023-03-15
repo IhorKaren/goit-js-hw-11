@@ -1,16 +1,16 @@
 export default function makeGalleryItem(array) {
-    return array
-       .map(
-         ({
-           webformatURL,
-           largeImageURL,
-           tags,
-           likes,
-           views,
-           comments,
-           downloads,
-         }) => {
-           return `<div class="photo-card">
+  return array
+    .map(
+      ({
+        webformatURL,
+        largeImageURL,
+        tags,
+        likes,
+        views,
+        comments,
+        downloads,
+      }) => {
+        return `<div class="photo-card">
          <a class='gallery__link' href="${largeImageURL}"><img src="${webformatURL}" alt="${tags}" loading="lazy" /></a>
          <div class="info">
            <p class="info-item">
@@ -27,7 +27,7 @@ export default function makeGalleryItem(array) {
            </p>
          </div>
        </div>`;
-         }
-       )
-       .join('');
-   }
+      }
+    )
+    .join('');
+}

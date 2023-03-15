@@ -8,7 +8,7 @@ const lightbox = new SimpleLightbox('.gallery a', {
   captionsData: 'alt',
   captionPosition: 'bottom',
   captionDelay: 300,
-})
+});
 
 const refs = {
   formEl: document.querySelector('.search-form'),
@@ -30,7 +30,7 @@ async function handleFormSubmit(e) {
   formValue = e.target.elements.searchQuery.value.trim();
 
   if (!formValue) {
-    hideLoadMoreBtn()
+    hideLoadMoreBtn();
     Notiflix.Notify.info('Please fill in the input field for image search');
     return;
   }
@@ -89,7 +89,7 @@ function makeGalleryUI(photos) {
     } images.`
   );
 
-  lightbox.refresh()
+  lightbox.refresh();
 }
 
 function smoothScroll() {
